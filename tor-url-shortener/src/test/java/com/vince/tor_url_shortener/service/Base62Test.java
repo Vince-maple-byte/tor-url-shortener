@@ -6,13 +6,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class base62Test {
+class Base62Test {
 
     //Testing to see if the Base62 characters are working properly
     @Test
     void checkIfBase62CreatesAnArrayOfBase62Values(){
         //If
-        base62 expected = new base62(null);
+        Base62 expected = new Base62(null);
         //Then
         char[] result = new char[]{
                 '0','1','2','3','4','5','6','7','8','9',

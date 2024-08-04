@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UrlRepositoryTest {
 
     private Url url;
-    
+
     private final UrlRepository urlRepository;
 
     @Autowired

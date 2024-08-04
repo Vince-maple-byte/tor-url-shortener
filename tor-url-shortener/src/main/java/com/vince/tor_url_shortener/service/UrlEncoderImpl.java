@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 //This is where we encode the url
 @Service
 public class UrlEncoderImpl implements UrlEncoder{
-    private final base62 base62;
+    private final Base62 base62;
 
     //We are going to manage the value of COUNTER using redis to manage the value of counter
     //throughout all of our nodes, and then we are just going to pull the value of Counter from
@@ -14,7 +14,7 @@ public class UrlEncoderImpl implements UrlEncoder{
     public static long COUNTER = 1_000_000;
 
     @Autowired
-    public UrlEncoderImpl(base62 base62){
+    public UrlEncoderImpl(Base62 base62){
         this.base62 = base62;
     }
 
