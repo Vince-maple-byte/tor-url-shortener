@@ -1,5 +1,7 @@
 package com.vince.tor_url_shortener.service;
 
+import com.vince.tor_url_shortener.domain.Url;
+import com.vince.tor_url_shortener.repository.UrlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UrlEncoderImpl implements UrlEncoder{
     private final Base62 base62;
+    private final UrlRepository urlRepository;
 
     //We are going to manage the value of COUNTER using redis to manage the value of counter
     //throughout all of our nodes, and then we are just going to pull the value of Counter from
@@ -14,8 +17,9 @@ public class UrlEncoderImpl implements UrlEncoder{
     public static long COUNTER = 1_000_000;
 
     @Autowired
-    public UrlEncoderImpl(Base62 base62){
+    public UrlEncoderImpl(Base62 base62, UrlRepository urlRepository){
         this.base62 = base62;
+        this.urlRepository = urlRepository;
     }
 
     //This makes the encoded base62 string and sends it back to the user so that they know
@@ -33,6 +37,9 @@ public class UrlEncoderImpl implements UrlEncoder{
             i = i / 62;
         }
         COUNTER++;
-        return encodedUrl.reverse().toString();
+        String newUrl = encodedUrl.reverse().toString();
+        Url urlEntity = new Url(url, newUrl);
+        urlRepository.save(urlEntity);
+        return newUrl;
     }
 }
