@@ -14,7 +14,7 @@ public class UrlEncoderImpl implements UrlEncoder{
     //We are going to manage the value of COUNTER using redis to manage the value of counter
     //throughout all of our nodes, and then we are just going to pull the value of Counter from
     //There and use incr in redis
-    public static long COUNTER = 1_000_000;
+    public static long COUNTER = 3844;
 
     @Autowired
     public UrlEncoderImpl(Base62 base62, UrlRepository urlRepository){
@@ -39,7 +39,11 @@ public class UrlEncoderImpl implements UrlEncoder{
         COUNTER++;
         String newUrl = encodedUrl.reverse().toString();
         Url urlEntity = new Url(url, newUrl);
-        urlRepository.save(urlEntity);
+        //urlRepository.save(urlEntity);
         return newUrl;
     }
+
+    //TODO: Make a separate method to decouple this and save the old and new url in the database
+
+
 }

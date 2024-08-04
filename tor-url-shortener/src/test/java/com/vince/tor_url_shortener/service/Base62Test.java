@@ -22,6 +22,7 @@ class Base62Test {
                 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
         };
         assertEquals(expected.base62Values()[61], result[61]);
+
     }
 
 }
