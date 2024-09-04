@@ -33,6 +33,7 @@ public class UrlController {
             return redirectView;
         }
 
+        //This is just in case the url does not exist if anything I will change this to a 404 message
         redirectView.setUrl("https://google.com/"+shortenUrl);
         redirectView.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
         return redirectView;
