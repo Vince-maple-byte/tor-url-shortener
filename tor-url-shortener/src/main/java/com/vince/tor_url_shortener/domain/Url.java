@@ -1,18 +1,16 @@
 package com.vince.tor_url_shortener.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name="Url")
+@Table(name="url")
 public class Url {
 
+    @Column(name = "originalurl")
     private String originalUrl;
 
     @Id
-    @Column(nullable = false)
+    @Column(name = "shortenurl", nullable = false)
     private String shortenUrl;
 
     public Url() {
@@ -23,6 +21,7 @@ public class Url {
         this.shortenUrl = shortenUrl;
     }
 
+    //This is just to create an java object with the builder pattern
     public Url(Builder builder){
         this.shortenUrl = builder.shortenUrl;
         this.originalUrl = builder.originalUrl;

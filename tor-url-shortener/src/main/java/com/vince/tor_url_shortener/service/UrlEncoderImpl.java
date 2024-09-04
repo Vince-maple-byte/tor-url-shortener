@@ -39,8 +39,12 @@ public class UrlEncoderImpl implements UrlEncoder{
         COUNTER++;
         String newUrl = encodedUrl.reverse().toString();
         Url urlEntity = new Url(url, newUrl);
-        //urlRepository.save(urlEntity);
+        updateNewUrl(urlEntity);
         return newUrl;
+    }
+
+    public void updateNewUrl(Url newUrl){
+        urlRepository.save(newUrl);
     }
 
     //TODO: Make a separate method to decouple this and save the old and new url in the database
