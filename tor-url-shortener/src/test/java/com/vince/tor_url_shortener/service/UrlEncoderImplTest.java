@@ -3,9 +3,11 @@ package com.vince.tor_url_shortener.service;
 import com.vince.tor_url_shortener.repository.UrlRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class UrlEncoderImplTest {
 
     private final UrlRepository urlRepository;
