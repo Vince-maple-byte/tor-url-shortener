@@ -1,7 +1,8 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:17-jdk-alpine
 
 VOLUME /tmp
 
+#host.docker.internal allows 
 ENV MYSQL_URL="" 
 ENV MYSQL_USER=""
 ENV MYSQL_PASSWORD=""
