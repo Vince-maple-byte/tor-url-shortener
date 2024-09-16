@@ -2,7 +2,7 @@ FROM openjdk:17-jdk-alpine
 
 VOLUME /tmp
 
-#host.docker.internal allows 
+#host.docker.internal allows this docker container to know the ip adress of the localhost/
 ENV MYSQL_URL="" 
 ENV MYSQL_USER=""
 ENV MYSQL_PASSWORD=""
