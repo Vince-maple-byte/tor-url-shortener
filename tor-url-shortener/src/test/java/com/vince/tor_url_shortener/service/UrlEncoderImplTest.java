@@ -11,10 +11,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class UrlEncoderImplTest {
 
     private final UrlRepository urlRepository;
+    private final RedisCounter redisCounter;
+
 
     @Autowired
-    public UrlEncoderImplTest(UrlRepository urlRepository) {
+    public UrlEncoderImplTest(UrlRepository urlRepository, RedisCounter redisCounter) {
         this.urlRepository = urlRepository;
+        this.redisCounter = redisCounter;
     }
 
     public
@@ -23,7 +26,7 @@ class UrlEncoderImplTest {
         //If
 
         Base62 base62 = new Base62(null);
-        UrlEncoderImpl urlEncoder = new UrlEncoderImpl(base62, urlRepository);
+        UrlEncoderImpl urlEncoder = new UrlEncoderImpl(base62, urlRepository, redisCounter);
         String result = urlEncoder.encode("JJJ");
         //Then
         String expected = "100";

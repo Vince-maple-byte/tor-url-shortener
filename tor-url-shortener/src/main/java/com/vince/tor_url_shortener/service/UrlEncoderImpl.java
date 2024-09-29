@@ -11,15 +11,14 @@ public class UrlEncoderImpl implements UrlEncoder{
     private final Base62 base62;
     private final UrlRepository urlRepository;
 
-    //We are going to manage the value of COUNTER using redis to manage the value of counter
-    //throughout all of our nodes, and then we are just going to pull the value of Counter from
-    //There and use incr in redis
-    public static long COUNTER = 3844;
+    //We accomplish the redis counter distribution in the RedisCounter class
+    private final RedisCounter redisCounter;
 
     @Autowired
-    public UrlEncoderImpl(Base62 base62, UrlRepository urlRepository){
+    public UrlEncoderImpl(Base62 base62, UrlRepository urlRepository, RedisCounter redisCounter){
         this.base62 = base62;
         this.urlRepository = urlRepository;
+        this.redisCounter = redisCounter;
     }
 
     //This makes the encoded base62 string and sends it back to the user so that they know
@@ -30,13 +29,12 @@ public class UrlEncoderImpl implements UrlEncoder{
     public String encode(String url) {
         StringBuilder encodedUrl = new StringBuilder();
         //We are going to do the base 10 to base 62 conversion here
-        long i = COUNTER;
+        long i = redisCounter.getCounterAndIncrement();
         while (i > 0){
             int decimalVal = (int) i % 62;
             encodedUrl.append(base62.base62Values()[decimalVal]);
             i = i / 62;
         }
-        COUNTER++;
         String newUrl = encodedUrl.reverse().toString();
         Url urlEntity = new Url(url, newUrl);
         updateNewUrl(urlEntity);
@@ -46,8 +44,6 @@ public class UrlEncoderImpl implements UrlEncoder{
     public void updateNewUrl(Url newUrl){
         urlRepository.save(newUrl);
     }
-
-    //TODO: Make a separate method to decouple this and save the old and new url in the database
 
 
 }

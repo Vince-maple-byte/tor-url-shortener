@@ -14,6 +14,8 @@ import java.util.Optional;
 @RestController("url")
 public class UrlController {
 
+    //TODO: Create caching for database retrieval querying in the get methods using @Cachable in redis
+
     private final UrlEncoderImpl urlEncoder;
     private final UrlDecoderImpl urlDecoder;
 
@@ -23,6 +25,7 @@ public class UrlController {
         this.urlDecoder = urlDecoder;
     }
 
+    //The request to get an original url from the shortened one provided
     @GetMapping("/{shortenUrl}")
     public RedirectView redirectToNewUrl(@PathVariable("shortenUrl") String shortenUrl){
         Optional<Url> existingUrl = urlDecoder.findExistingUrl(shortenUrl);
@@ -39,6 +42,7 @@ public class UrlController {
         return redirectView;
     }
 
+    //This was supposed to send the html home page to the client, but I don't need this since I have nginx doing that
     @GetMapping("/")
     public String homePage() {
         return """
@@ -58,6 +62,9 @@ public class UrlController {
                 """;
     }
 
+    //The post request to handle creating an new url to be shortened
+    //UrlCreation is used to capture the Json object being sent and converting it to a java object for us to use
+    
     @PostMapping("/")
     public ResponseEntity<String> createNewUrl(@RequestBody UrlCreation urlCreation) {
         String response = urlEncoder.encode(urlCreation.getUrlToCreate());
