@@ -63,6 +63,9 @@ public class Url {
             if(shortenUrl == null){
                 throw new IllegalStateException("Invalid. Did not have a shortened url");
             }
+            else if (originalUrl == null){
+                throw new IllegalStateException("Invalid. Did not have an original url");
+            }
             return new Url(this);
         }
     }

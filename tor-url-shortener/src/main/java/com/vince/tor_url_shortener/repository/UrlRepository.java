@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UrlRepository extends CrudRepository<Url, String> {
+    Url findByShortenUrl(String shortenUrl);
 }

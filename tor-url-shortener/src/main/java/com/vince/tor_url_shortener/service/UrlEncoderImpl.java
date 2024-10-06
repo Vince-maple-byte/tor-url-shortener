@@ -35,14 +35,7 @@ public class UrlEncoderImpl implements UrlEncoder{
             encodedUrl.append(base62.base62Values()[decimalVal]);
             i = i / 62;
         }
-        String newUrl = encodedUrl.reverse().toString();
-        Url urlEntity = new Url(url, newUrl);
-        updateNewUrl(urlEntity);
-        return newUrl;
-    }
-
-    public void updateNewUrl(Url newUrl){
-        urlRepository.save(newUrl);
+        return encodedUrl.reverse().toString();
     }
 
 

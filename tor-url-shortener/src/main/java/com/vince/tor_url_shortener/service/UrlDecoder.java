@@ -12,5 +12,4 @@ And if it does we just need to give back the original website url string.
 public interface UrlDecoder {
 
     public long decode(String url);
-    public Optional<Url> findExistingUrl(String url);
 }

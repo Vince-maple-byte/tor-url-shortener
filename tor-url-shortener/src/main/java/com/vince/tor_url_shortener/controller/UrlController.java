@@ -1,8 +1,11 @@
 package com.vince.tor_url_shortener.controller;
 
 import com.vince.tor_url_shortener.domain.Url;
+import com.vince.tor_url_shortener.dto.UrlCreation;
+import com.vince.tor_url_shortener.dto.UrlDTO;
 import com.vince.tor_url_shortener.service.UrlDecoderImpl;
 import com.vince.tor_url_shortener.service.UrlEncoderImpl;
+import com.vince.tor_url_shortener.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,32 +17,33 @@ import java.util.Optional;
 @RestController("url")
 public class UrlController {
 
-    //TODO: Create caching for database retrieval querying in the get methods using @Cachable in redis
+    //TODO: Create caching for database retrieval querying in the get methods using redisTemplate. Make sure to use a DTO with this??
 
-    private final UrlEncoderImpl urlEncoder;
-    private final UrlDecoderImpl urlDecoder;
+    // TODO: Make a test to make sure that the /get/shortenUrl return both an UrlNotFoundException and a valid response
+
+    private final UrlService urlService;
 
     @Autowired
-    public UrlController(UrlEncoderImpl urlEncoder, UrlDecoderImpl urlDecoder){
-        this.urlEncoder = urlEncoder;
-        this.urlDecoder = urlDecoder;
+    public UrlController(UrlService urlService){
+        this.urlService = urlService;
     }
 
     //The request to get an original url from the shortened one provided
     @GetMapping("/{shortenUrl}")
     public RedirectView redirectToNewUrl(@PathVariable("shortenUrl") String shortenUrl){
-        Optional<Url> existingUrl = urlDecoder.findExistingUrl(shortenUrl);
+        UrlDTO redirectUrl = urlService.getUrl(shortenUrl);
         RedirectView redirectView = new RedirectView();
-        if(existingUrl.isPresent()){
-            redirectView.setUrl(existingUrl.get().getOriginalUrl());
-            redirectView.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
-            return redirectView;
+        if(redirectUrl != null){
+            redirectView.setUrl(redirectUrl.getOriginalUrl());
         }
-
-        //This is just in case the url does not exist if anything I will change this to a 404 message
-        redirectView.setUrl("https://google.com/"+shortenUrl);
+        else {
+            //This is just in case the url does not exist if anything I will change this to a 404 message
+            redirectView.setUrl("https://google.com/"+shortenUrl);
+        }
         redirectView.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
         return redirectView;
+
+
     }
 
     //This was supposed to send the html home page to the client, but I don't need this since I have nginx doing that
@@ -66,8 +70,8 @@ public class UrlController {
     //UrlCreation is used to capture the Json object being sent and converting it to a java object for us to use
     
     @PostMapping("/")
-    public ResponseEntity<String> createNewUrl(@RequestBody UrlCreation urlCreation) {
-        String response = urlEncoder.encode(urlCreation.getUrlToCreate());
+    public ResponseEntity<UrlDTO> createNewUrl(@RequestBody UrlCreation urlCreation) {
+        UrlDTO response = urlService.createUrl(urlCreation);
         return ResponseEntity.ok(response);
     }
 }

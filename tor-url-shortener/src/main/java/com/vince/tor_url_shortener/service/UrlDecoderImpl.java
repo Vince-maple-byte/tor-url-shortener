@@ -10,10 +10,6 @@ import java.util.Optional;
 @Service
 public class UrlDecoderImpl implements UrlDecoder{
 
-    /* TODO: Make this method so that it retrieves the url in the database
-
-     */
-
     private final UrlRepository urlRepository;
     private final Base62 base62;
 
@@ -97,10 +93,7 @@ public class UrlDecoderImpl implements UrlDecoder{
         return -1;
     }
 
-    @Override
-    public Optional<Url> findExistingUrl(String url) {
-        return urlRepository.findById(url);
-    }
+
 
 
 }
