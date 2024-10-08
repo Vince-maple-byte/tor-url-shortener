@@ -9,13 +9,10 @@ import java.util.Optional;
 
 @Service
 public class UrlDecoderImpl implements UrlDecoder{
-
-    private final UrlRepository urlRepository;
     private final Base62 base62;
 
     @Autowired
-    public UrlDecoderImpl(UrlRepository urlRepository, Base62 base62){
-        this.urlRepository = urlRepository;
+    public UrlDecoderImpl(Base62 base62){
         this.base62 = base62;
     }
 

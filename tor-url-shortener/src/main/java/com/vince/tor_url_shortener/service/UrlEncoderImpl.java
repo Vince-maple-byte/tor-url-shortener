@@ -9,15 +9,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class UrlEncoderImpl implements UrlEncoder{
     private final Base62 base62;
-    private final UrlRepository urlRepository;
 
     //We accomplish the redis counter distribution in the RedisCounter class
     private final RedisCounter redisCounter;
 
     @Autowired
-    public UrlEncoderImpl(Base62 base62, UrlRepository urlRepository, RedisCounter redisCounter){
+    public UrlEncoderImpl(Base62 base62, RedisCounter redisCounter){
         this.base62 = base62;
-        this.urlRepository = urlRepository;
         this.redisCounter = redisCounter;
     }
 

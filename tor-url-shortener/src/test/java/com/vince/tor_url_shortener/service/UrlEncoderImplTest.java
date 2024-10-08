@@ -18,10 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class UrlEncoderImplTest {
 
     @Mock
-
-    private UrlRepository urlRepository;
-
-    @Mock
     private RedisCounter redisCounter;
 
 
@@ -40,7 +36,7 @@ class UrlEncoderImplTest {
         //If
 
         Base62 base62 = new Base62(null);
-        UrlEncoderImpl urlEncoder = new UrlEncoderImpl(base62, urlRepository, redisCounter);
+        UrlEncoderImpl urlEncoder = new UrlEncoderImpl(base62, redisCounter);
         String result = urlEncoder.encode("JJJ");
         //Then
         String expected = "1";
