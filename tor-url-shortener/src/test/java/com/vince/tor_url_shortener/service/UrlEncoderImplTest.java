@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
 class UrlEncoderImplTest {
 
     @Mock
@@ -36,7 +35,7 @@ class UrlEncoderImplTest {
         //If
 
         Base62 base62 = new Base62(null);
-        UrlEncoderImpl urlEncoder = new UrlEncoderImpl(base62, redisCounter);
+        //urlEncoder = new UrlEncoderImpl(base62, redisCounter);
         String result = urlEncoder.encode("JJJ");
         //Then
         String expected = "1";

@@ -44,9 +44,11 @@ public class UrlServiceImpl implements UrlService{
 
         //Get the shortened url from encoder
         String shortenedUrl = urlEncoder.encode(urlToCreate.getUrlToCreate());
+        System.out.println(shortenedUrl);
 
         //Create the Url object
         Url urlCreated = urlMapper.toEntity(urlToCreate);
+        System.out.println(urlCreated);
 
         //Add the shortened url to urlCreated
         urlCreated.setShortenUrl(shortenedUrl);

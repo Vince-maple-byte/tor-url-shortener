@@ -13,14 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 //Test for the UrlRepository to work
 @SpringBootTest
-public class UrlRepositoryTest {
+public class UrlRepositoryIntegrationTest {
 
     private Url url;
 
     private final UrlRepository urlRepository;
 
     @Autowired
-    public UrlRepositoryTest(UrlRepository urlRepository) {
+    public UrlRepositoryIntegrationTest(UrlRepository urlRepository) {
         this.urlRepository = urlRepository;
     }
 

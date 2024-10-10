@@ -17,4 +17,6 @@ public class UrlMapper {
         url.setOriginalUrl(urlCreation.getUrlToCreate());
         return url;
     }
+
+
 }
