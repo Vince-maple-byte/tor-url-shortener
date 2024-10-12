@@ -14,8 +14,6 @@ import java.util.Optional;
 @Service
 public class UrlServiceImpl implements UrlService{
 
-    // TODO: Make tests for the UrlServiceImpl class
-
     private final UrlRepository urlRepository;
     private final UrlEncoder urlEncoder;
 
@@ -35,7 +33,10 @@ public class UrlServiceImpl implements UrlService{
     public UrlDTO getUrl(String shortenUrl) {
         //We find the url and return the UrlDTO to the controller
         Optional<Url> urlOptional = urlRepository.findById(shortenUrl);
-        if(urlOptional.isPresent()) return urlMapper.toDTO(urlOptional.get());
+        if(urlOptional.isPresent()) {
+            System.out.println(urlMapper.toDTO(urlOptional.get()));
+            return urlMapper.toDTO(urlOptional.get());
+        }
         else throw new UrlNotFoundException("Not a valid shorten url: " + shortenUrl );
     }
 

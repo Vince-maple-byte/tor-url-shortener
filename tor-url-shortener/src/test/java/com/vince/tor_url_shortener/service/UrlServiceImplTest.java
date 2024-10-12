@@ -4,6 +4,7 @@ import com.vince.tor_url_shortener.domain.Url;
 import com.vince.tor_url_shortener.dto.UrlCreation;
 import com.vince.tor_url_shortener.dto.UrlDTO;
 import com.vince.tor_url_shortener.dto.UrlMapper;
+import com.vince.tor_url_shortener.exception.UrlNotFoundException;
 import com.vince.tor_url_shortener.repository.UrlRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
 
@@ -78,37 +82,71 @@ class UrlServiceImplTest {
 
         Mockito.when(urlRepository.save(Mockito.any(Url.class))).thenReturn(urlExpected);
 
-        //System.out.println(urlEncoder.encode(urlCreation.getUrlToCreate()));
-        //System.out.println(urlMapper.toEntity(urlCreation));
-        //urlExpected.setShortenUrl("bitl/.com");
-        //assertNotNull(urlEncoder.encode(urlCreation.getUrlToCreate()), "urlEncoder.encode(urlCreation.getUrlToCreate()) is returning null");
-        //assertNotNull(urlMapper.toEntity(urlCreation), "UrlMapper.toEntity() is returning null");
-        //assertNotNull(urlMapper.toEntity(urlCreation), "UrlMapper.toEntity() is returning null");
-
-
-//        Mockito.when(url.s)
-
         //When
         UrlDTO urlDTOResult = urlService.createUrl(urlCreation);
 
         //Then
-       assertEquals(urlDTOResult.getOriginalUrl(), urlDTOExpected.getOriginalUrl());
-       assertEquals(urlDTOResult.getShortenUrl(), urlDTOExpected.getShortenUrl());
+        assertEquals(urlDTOResult.getOriginalUrl(), urlDTOExpected.getOriginalUrl());
+        assertEquals(urlDTOResult.getShortenUrl(), urlDTOExpected.getShortenUrl());
 
         Mockito.verify(urlMapper, Mockito.times(1)).toEntity(Mockito.eq(urlCreation));
         Mockito.verify(urlEncoder, Mockito.times(1)).encode(urlCreation.getUrlToCreate());
-        //Mockito.verify(urlMapper, Mockito.times(1)).toDTO(Mockito.eq(urlExpected));
+        Mockito.verify(urlMapper, Mockito.times(1)).toDTO(Mockito.eq(urlExpected));
 
     }
 
 
 
     @Test
-    void getUrl() {
-        //assertEquals(1, 1);
+    void Check_To_See_If_getUrl_method_gives_a_valid_url() {
+        //Given
+        String originalUrl = "google.com";
+        String shortenedUrl = "bit.ly/";
+        UrlDTO urlDTOExpected = new UrlDTO(originalUrl, shortenedUrl);
+        Optional<Url> urlOptional = Optional.of(new Url(originalUrl,shortenedUrl));
+
+        //When
+        Mockito.when(urlRepository.findById(shortenedUrl))
+                .thenReturn(Optional.of(new Url(originalUrl,shortenedUrl)));
+
+        Mockito.when(urlMapper.toDTO(Mockito.any(Url.class)))
+                .thenReturn(urlDTOExpected);
+
+        //Then
+        UrlDTO urlDTOActual = urlService.getUrl(shortenedUrl);
+        System.out.println(urlDTOActual);
+
+        //Mockito.verify(urlMapper, Mockito.times(1)).toDTO(Mockito.eq(new Url(originalUrl,shortenedUrl)));
+
+        assertEquals(urlDTOExpected.getShortenUrl(),urlDTOActual.getShortenUrl(), "Checking the shorten url from the get method");
+        assertEquals(urlDTOExpected.getOriginalUrl(),urlDTOActual.getOriginalUrl(), "Checking the original url from the get method");
     }
 
     @Test
-    void createUrl() {
+    void Check_To_See_If_getUrl_method_throws_an_exception_for_invalid_url() {
+        //Given
+        String originalUrl = "google.com";
+        String shortenedUrl = "bit.ly/";
+        UrlDTO urlDTOExpected = new UrlDTO(originalUrl, shortenedUrl);
+        Optional<Url> urlOptional = Optional.of(new Url(originalUrl,shortenedUrl));
+
+        //When
+        Mockito.when(urlRepository.findById(shortenedUrl))
+                .thenReturn(Optional.empty());
+
+        Mockito.when(urlMapper.toDTO(Mockito.any(Url.class)))
+                .thenReturn(urlDTOExpected);
+
+
+        //UrlDTO urlDTOActual = urlService.getUrl(shortenedUrl);
+
+        //Mockito.verify(urlMapper, Mockito.times(1)).toDTO(Mockito.eq(new Url(originalUrl,shortenedUrl)));
+        UrlNotFoundException exception = assertThrows(UrlNotFoundException.class,
+                () -> urlService.getUrl(shortenedUrl)
+        );
+
+        //Then
+        assertEquals("Not a valid shorten url: " + shortenedUrl, exception.getMessage());
     }
+
 }
