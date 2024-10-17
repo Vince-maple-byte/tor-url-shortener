@@ -3,11 +3,13 @@ package com.vince.tor_url_shortener.controller;
 import com.vince.tor_url_shortener.domain.Url;
 import com.vince.tor_url_shortener.dto.UrlCreation;
 import com.vince.tor_url_shortener.dto.UrlDTO;
+import com.vince.tor_url_shortener.exception.UrlNotFoundException;
 import com.vince.tor_url_shortener.service.UrlDecoderImpl;
 import com.vince.tor_url_shortener.service.UrlEncoderImpl;
 import com.vince.tor_url_shortener.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -18,8 +20,6 @@ import java.util.Optional;
 public class UrlController {
 
     //TODO: Create caching for database retrieval querying in the get methods using redisTemplate. Make sure to use a DTO with this??
-
-    // TODO: Make a test to make sure that the /get/shortenUrl return both an UrlNotFoundException and a valid response
 
     private final UrlService urlService;
 
@@ -38,7 +38,7 @@ public class UrlController {
         }
         else {
             //This is just in case the url does not exist if anything I will change this to a 404 message
-            redirectView.setUrl("https://google.com/"+shortenUrl);
+            throw new UrlNotFoundException("This url has not been found");
         }
         redirectView.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
         return redirectView;
@@ -66,12 +66,14 @@ public class UrlController {
                 """;
     }
 
-    //The post request to handle creating an new url to be shortened
+    //The post request to handle creating a new url to be shortened
     //UrlCreation is used to capture the Json object being sent and converting it to a java object for us to use
     
     @PostMapping("/")
     public ResponseEntity<UrlDTO> createNewUrl(@RequestBody UrlCreation urlCreation) {
         UrlDTO response = urlService.createUrl(urlCreation);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
     }
 }

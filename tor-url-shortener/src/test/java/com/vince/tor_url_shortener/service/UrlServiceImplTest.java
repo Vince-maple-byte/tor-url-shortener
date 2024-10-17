@@ -6,12 +6,8 @@ import com.vince.tor_url_shortener.dto.UrlDTO;
 import com.vince.tor_url_shortener.dto.UrlMapper;
 import com.vince.tor_url_shortener.exception.UrlNotFoundException;
 import com.vince.tor_url_shortener.repository.UrlRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -47,17 +43,6 @@ class UrlServiceImplTest {
 
     @Autowired
     private UrlServiceImpl urlService;
-
-
-    @BeforeEach
-    void setUp() {
-//        MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    void tearDown() {
-
-    }
 
     @Test
     void Create_Valid_Url_With_A_URLDTO_Returned() {
