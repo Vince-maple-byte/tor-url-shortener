@@ -22,19 +22,33 @@ public class UrlController {
     //TODO: Create caching for database retrieval querying in the get methods using redisTemplate. Make sure to use a DTO with this??
 
     private final UrlService urlService;
+    private final RedisCaching redisCaching;
 
     @Autowired
-    public UrlController(UrlService urlService){
+    public UrlController(UrlService urlService, RedisCaching redisCaching){
         this.urlService = urlService;
+        this.redisCaching = redisCaching;
     }
 
     //The request to get an original url from the shortened one provided
     @GetMapping("/{shortenUrl}")
     public RedirectView redirectToNewUrl(@PathVariable("shortenUrl") String shortenUrl){
-        UrlDTO redirectUrl = urlService.getUrl(shortenUrl);
+        UrlDTO redirectUrl= null;
+        Optional<String> cache = redisCaching.getCache(shortenUrl);
+        if(cache.isPresent()){
+            redirectUrl = new UrlDTO(cache.get(), shortenUrl );
+        }
+        else {
+            redirectUrl = urlService.getUrl(shortenUrl);
+        }
+
         RedirectView redirectView = new RedirectView();
-        if(redirectUrl != null){
+        if(redirectUrl != null && cache.isPresent()){
             redirectView.setUrl(redirectUrl.getOriginalUrl());
+        }
+        else if(redirectUrl != null){
+            redirectView.setUrl(redirectUrl.getOriginalUrl());
+            redisCaching.setCache(shortenUrl, redirectUrl.getOriginalUrl());
         }
         else {
             //This is just in case the url does not exist if anything I will change this to a 404 message
@@ -72,6 +86,7 @@ public class UrlController {
     @PostMapping("/")
     public ResponseEntity<UrlDTO> createNewUrl(@RequestBody UrlCreation urlCreation) {
         UrlDTO response = urlService.createUrl(urlCreation);
+        redisCaching.setCache(response.getShortenUrl(), response.getOriginalUrl());
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
