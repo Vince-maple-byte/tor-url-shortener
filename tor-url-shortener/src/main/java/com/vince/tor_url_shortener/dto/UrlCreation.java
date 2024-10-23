@@ -1,4 +1,4 @@
-package com.vince.tor_url_shortener.controller;
+package com.vince.tor_url_shortener.dto;
 
 public class UrlCreation {
     private String urlToCreate;

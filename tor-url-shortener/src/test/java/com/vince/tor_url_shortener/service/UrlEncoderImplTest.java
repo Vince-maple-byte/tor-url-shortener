@@ -10,40 +10,43 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 class UrlEncoderImplTest {
 
-    @Mock
-
-    private UrlRepository urlRepository;
-
-    @Mock
+    @MockBean
     private RedisCounter redisCounter;
 
-
-    @InjectMocks
+    @MockBean
+    private Base62 base62;
+    @Autowired
     private UrlEncoderImpl urlEncoder;
 
     @BeforeEach
     void setUp() {
         // Mock the RedisCounter behavior (e.g., mock getCounter to return 100)
         Mockito.when(redisCounter.getCounterAndIncrement()).thenReturn(1L);
+        Mockito.when(base62.base62Values()).thenReturn(new char[]{
+                '0','1','2','3','4','5','6','7','8','9',
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+                'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+        });
     }
 
-    public
     @Test
     void testingIfEncodeReturnsAString(){
-        //If
-
-        Base62 base62 = new Base62(null);
-        UrlEncoderImpl urlEncoder = new UrlEncoderImpl(base62, urlRepository, redisCounter);
-        String result = urlEncoder.encode("JJJ");
-        //Then
+        //Given
         String expected = "1";
+
+        //When
+        String result = urlEncoder.encode("JJJ");
+
+        //Then
         assertEquals(expected, result);
     }
 

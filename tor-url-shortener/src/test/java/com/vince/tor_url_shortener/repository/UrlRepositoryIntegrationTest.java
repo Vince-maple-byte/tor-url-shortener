@@ -1,6 +1,7 @@
 package com.vince.tor_url_shortener.repository;
 
 import com.vince.tor_url_shortener.domain.Url;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +13,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 //Test for the UrlRepository to work
 @SpringBootTest
-public class UrlRepositoryTest {
+public class UrlRepositoryIntegrationTest {
 
     private Url url;
 
     private final UrlRepository urlRepository;
 
     @Autowired
-    public UrlRepositoryTest(UrlRepository urlRepository) {
+    public UrlRepositoryIntegrationTest(UrlRepository urlRepository) {
         this.urlRepository = urlRepository;
     }
 
@@ -32,6 +33,12 @@ public class UrlRepositoryTest {
                 .build();
 
     }
+
+    @AfterEach
+    void tearDown() {
+        url = null;
+    }
+
 
     @Test
     void doesTheEntityGetSavedIntoTheDatabase(){

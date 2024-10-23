@@ -10,19 +10,17 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class UrlDecoderImplTest {
 
-    private final UrlRepository urlRepository;
     private final Base62 base62;
 
     @Autowired
-    public UrlDecoderImplTest(UrlRepository urlRepository, Base62 base62) {
-        this.urlRepository = urlRepository;
+    public UrlDecoderImplTest(Base62 base62) {
         this.base62 = base62;
     }
 
     @Test
     void testingIfNumericalValueOfBase62CharacterReturnsTheCorrectDecimalValue(){
         //If
-        UrlDecoderImpl urlDecoder = new UrlDecoderImpl(urlRepository, base62);
+        UrlDecoderImpl urlDecoder = new UrlDecoderImpl(base62);
         int expectedLocation1 = urlDecoder.numericalValueOfBase62Character('z');
         int expectedLocation2 = urlDecoder.numericalValueOfBase62Character('S');
         int expectedLocation3 = urlDecoder.numericalValueOfBase62Character('7');
@@ -39,7 +37,7 @@ class UrlDecoderImplTest {
     @Test
     void testingIfDecoderReturnsTheCorrectDecimalValue(){
         //If
-        UrlDecoderImpl urlDecoder = new UrlDecoderImpl(urlRepository, base62);
+        UrlDecoderImpl urlDecoder = new UrlDecoderImpl(base62);
         long expected1 = urlDecoder.decode("ZZ");
         long expected2 = urlDecoder.decode("101");
         //Then

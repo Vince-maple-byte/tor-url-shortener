@@ -60,8 +60,9 @@ public class Url {
 
         //We can force some variable that need to have a value like this
         public Url build() {
-            if(shortenUrl == null){
-                throw new IllegalStateException("Invalid. Did not have a shortened url");
+
+            if (originalUrl == null){
+                throw new IllegalStateException("Invalid. Did not have an original url");
             }
             return new Url(this);
         }
