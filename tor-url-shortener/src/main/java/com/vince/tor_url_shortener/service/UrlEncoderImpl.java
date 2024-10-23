@@ -1,7 +1,5 @@
 package com.vince.tor_url_shortener.service;
 
-import com.vince.tor_url_shortener.domain.Url;
-import com.vince.tor_url_shortener.repository.UrlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

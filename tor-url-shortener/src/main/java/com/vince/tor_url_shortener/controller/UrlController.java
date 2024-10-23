@@ -1,11 +1,8 @@
 package com.vince.tor_url_shortener.controller;
 
-import com.vince.tor_url_shortener.domain.Url;
 import com.vince.tor_url_shortener.dto.UrlCreation;
 import com.vince.tor_url_shortener.dto.UrlDTO;
 import com.vince.tor_url_shortener.exception.UrlNotFoundException;
-import com.vince.tor_url_shortener.service.UrlDecoderImpl;
-import com.vince.tor_url_shortener.service.UrlEncoderImpl;
 import com.vince.tor_url_shortener.service.UrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
