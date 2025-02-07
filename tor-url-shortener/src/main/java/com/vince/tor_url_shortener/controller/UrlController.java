@@ -11,12 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController("url")
 public class UrlController {
-
-    //TODO: Create caching for database retrieval querying in the get methods using redisTemplate. Make sure to use a DTO with this??
 
     private final UrlService urlService;
     private final RedisCaching redisCaching;
@@ -79,9 +78,12 @@ public class UrlController {
 
     //The post request to handle creating a new url to be shortened
     //UrlCreation is used to capture the Json object being sent and converting it to a java object for us to use
-    
+
+    //We needed to change @RequestBody to @RequestParam because @RequestBody can't handle application/x-www-form-urlencoded
+    //Since Request
     @PostMapping("/")
-    public ResponseEntity<UrlDTO> createNewUrl(@RequestBody UrlCreation urlCreation) {
+    public ResponseEntity<UrlDTO> createNewUrl(@RequestParam Map<String, String> originalUrl) {
+        UrlCreation urlCreation = new UrlCreation(originalUrl.get("originalUrl"));
         UrlDTO response = urlService.createUrl(urlCreation);
         redisCaching.setCache(response.getShortenUrl(), response.getOriginalUrl());
         return ResponseEntity.ok()

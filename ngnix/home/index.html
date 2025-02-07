@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Tor.ly Home Page</title>
+		<link rel="stylesheet" href="./index.css" />
+	</head>
+	<body>
+		<!-- Need to make the home page here with the css file -->
+		<!-- <h1>Hello world. This is a NGNIX server delivering this</h1> -->
+
+		<nav>
+			<div class="navbar--container">
+				<div class="logo">LOGO</div>
+				<!-- <input type="checkbox" id="menu-toggle" /> -->
+
+				<!-- This only works when using nginx for anything else we need to specify the uri/url location of the file -->
+				<div class="navbar--links">
+					<a href="/home">Home</a>
+					<a href="/malicious">Malicious Page</a>
+				</div>
+			</div>
+		</nav>
+
+		<main class="main">
+			<h1 class="header">Welcome To Tor.ly</h1>
+
+			<!--action contains the request url we are going to be sending the post request to.
+			Make sure to change the post request method in spring is @RequestBody-->
+
+			<div class="form-container">
+				<h2>Sign Up</h2>
+				<form action="http:localhost:8080/" method="POST">
+					<label for="originalUrl">Enter The Url To Shorten</label>
+					<input type="text" name="originalUrl" id="originalUrl" />
+					<input type="submit" value="Shorten" />
+				</form>
+			</div>
+
+			<div id="description-home">
+				This is an url mapper to your favorite .onion websites by simply
+				using this url followed by the code provided by.
+			</div>
+		</main>
+	</body>
+</html>
