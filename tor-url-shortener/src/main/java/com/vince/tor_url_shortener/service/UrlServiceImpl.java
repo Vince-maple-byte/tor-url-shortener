@@ -43,6 +43,7 @@ public class UrlServiceImpl implements UrlService{
     @Override
     public UrlDTO createUrl(UrlCreation urlToCreate) {
 
+
         //Get the shortened url from encoder
         String shortenedUrl = urlEncoder.encode(urlToCreate.getUrlToCreate());
         System.out.println(shortenedUrl);
