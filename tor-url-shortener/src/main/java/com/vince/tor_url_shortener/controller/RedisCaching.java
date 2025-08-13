@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.Optional;
 
+//Responsable for getting and retrieving the cache in redis for spring
 @Component
 public class RedisCaching {
 

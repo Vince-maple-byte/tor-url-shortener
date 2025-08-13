@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler()
+    @ExceptionHandler(UrlNotFoundException.class)
     public ResponseEntity<Object> handleUrlNotFoundException(UrlNotFoundException urlNotFoundException){
         return new ResponseEntity<>(urlNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
     }
