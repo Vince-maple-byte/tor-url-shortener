@@ -1,0 +1,66 @@
+#TODO:Complete the docker compose file
+
+services:
+    backend:
+        build:
+            context: ./tor-url-shortener
+            dockerfile: Dockerfile
+        container_name: tor-url-shortener
+        environment:
+            - MYSQL_PASSWORD=${db_password}
+            - MYSQL_USER=${db_user}
+            - MYSQL_URL=${db_url}
+            - CACHE_URL=${cache_url}
+            - CACHE_PORT=${cache_port}
+        ports:
+            - "8080:8080"
+        networks:
+            - frontend
+            - db
+            - cache
+            - backend
+        depends_on:
+            - database
+            - redis
+
+    database:
+        build:
+            context: ./database
+            dockerfile: Dockerfile
+        container_name: mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=${db_password}
+            - MYSQL_DATABASE=torurl
+        ports:
+            - "3307:3306"
+        networks:
+            - db
+    nginx:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        container_name: tor-proxy
+        networks:
+            - frontend
+            - backend
+        ports:
+            - "80:80"
+        depends_on:
+            - backend
+
+    redis:
+        image: redis:latest
+        container_name: cache
+        environment:
+            - CACHE_URL=${cache_url}
+            - CACHE_PORT=${cache_port}
+        networks:
+            - cache
+        ports:
+            - "6379:6379"
+
+networks:
+    backend:
+    frontend:
+    db:
+    cache:
