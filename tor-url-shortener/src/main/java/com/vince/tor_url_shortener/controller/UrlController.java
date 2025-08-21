@@ -64,7 +64,7 @@ public class UrlController {
 
     }
 
-    //TODO:Create the home page
+    //TODO:Create the home page with thymeleaf
      @GetMapping("/")
      public String homePage(Model model) {
          return "home";
@@ -75,6 +75,7 @@ public class UrlController {
 
     //We needed to change @RequestBody to @RequestParam because @RequestBody can't handle application/x-www-form-urlencoded
     //Since RequestParam handles query parameters and form data while RequestBody handles the entire request body (JSON, XML)
+    //TODO:Create a web page to give the user the new url to redirect to
     @PostMapping("/")
     public ResponseEntity<UrlDTO> createNewUrl(@RequestParam Map<String, String> originalUrl ) {
         UrlCreation urlCreation = new UrlCreation(originalUrl.get("originalUrl"));

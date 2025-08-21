@@ -7,10 +7,13 @@ import com.vince.tor_url_shortener.dto.UrlMapper;
 import com.vince.tor_url_shortener.exception.UrlNotFoundException;
 import com.vince.tor_url_shortener.repository.UrlRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Optional;
 
@@ -24,29 +27,32 @@ I need to use @SpringBootTest and use @MockBean @AutoWired
 since @ExtendWith(MockitoExtension.class) won't work if you use spring to manage Dependency Injection for you.
 However if you don't specify either of these annotations you can use the regular @Mock and @InjectMocks and Mockito
 would manually make the Mock objects and inject the Mock objects into the class that we are testing.
+
+Will need to use @ExtendWith(MockitoExtension.class) since @SpringBootTest is too heavy (integration test) for something this simple
  */
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class UrlServiceImplTest {
 
-    @MockBean
+    @Mock
     private UrlRepository urlRepository;
 
-    @MockBean
+    @Mock
     private UrlEncoder urlEncoder;
 
-    @MockBean
+    @Mock
     private UrlMapper urlMapper;
 
-    @MockBean
+    @Mock
     private UrlDecoder urlDecoder;
 
-    @Autowired
+    @InjectMocks
     private UrlServiceImpl urlService;
 
     @Test
     void Create_Valid_Url_With_A_URLDTO_Returned() {
         //Given
+        //UrlServiceImpl urlService = new UrlServiceImpl(urlRepository, urlEncoder, urlDecoder, urlMapper);
         String originalUrl = "google.com";
         String shortenedUrl = "bit.ly/";
         Url urlExpected = new Url.Builder()
@@ -85,6 +91,7 @@ class UrlServiceImplTest {
     @Test
     void Check_To_See_If_getUrl_method_gives_a_valid_url() {
         //Given
+        //UrlServiceImpl urlService = new UrlServiceImpl(urlRepository, urlEncoder, urlDecoder, urlMapper);
         String originalUrl = "google.com";
         String shortenedUrl = "bit.ly/";
         UrlDTO urlDTOExpected = new UrlDTO(originalUrl, shortenedUrl);
@@ -110,6 +117,7 @@ class UrlServiceImplTest {
     @Test
     void Check_To_See_If_getUrl_method_throws_an_exception_for_invalid_url() {
         //Given
+        //UrlServiceImpl urlService = new UrlServiceImpl(urlRepository, urlEncoder, urlDecoder, urlMapper);
         String originalUrl = "google.com";
         String shortenedUrl = "bit.ly/";
         UrlDTO urlDTOExpected = new UrlDTO(originalUrl, shortenedUrl);
@@ -119,8 +127,8 @@ class UrlServiceImplTest {
         Mockito.when(urlRepository.findById(shortenedUrl))
                 .thenReturn(Optional.empty());
 
-        Mockito.when(urlMapper.toDTO(Mockito.any(Url.class)))
-                .thenReturn(urlDTOExpected);
+//        Mockito.when(urlMapper.toDTO(Mockito.any(Url.class)))
+//                .thenReturn(urlDTOExpected);
 
 
         //UrlDTO urlDTOActual = urlService.getUrl(shortenedUrl);
