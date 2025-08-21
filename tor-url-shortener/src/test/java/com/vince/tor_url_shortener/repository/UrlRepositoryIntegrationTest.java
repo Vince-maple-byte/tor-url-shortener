@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 //Test for the UrlRepository to work
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("test") //This makes sure that this test case only runs in the test profile which doesn't include the redis config file
 public class UrlRepositoryIntegrationTest {
 
     private Url url;

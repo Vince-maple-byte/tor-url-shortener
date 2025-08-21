@@ -4,11 +4,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.mockito.Mockito;
+import org.springframework.test.context.ActiveProfiles;
 
 @Configuration
-@Profile("test")
+@ActiveProfiles("test") //This makes sure that this test case only runs in the test profile which doesn't include the redis config file
 public class TestRedisConfig {
 
     @Bean

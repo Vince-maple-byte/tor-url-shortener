@@ -34,8 +34,8 @@
 
     <div class="form-container">
         <h2>Sign Up</h2>
-        <form action="http:localhost:8080/" method="POST">
-            <label for="originalUrl">Enter The Url To Shorten</label>
+        <form th:action="@{/}" method="post">
+        <label for="originalUrl">Enter The Url To Shorten</label>
             <input type="text" name="originalUrl" id="originalUrl" />
             <input type="submit" value="Shorten" />
         </form>

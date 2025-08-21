@@ -23,12 +23,10 @@ public class UrlRepositoryUnitTest {
     @Mock
     private UrlRepository urlRepository;
 
-    private AutoCloseable closeable;
-
     //OpenMocks initialize mocks from the annotated fields
     @BeforeEach
     void openMocks(){
-        closeable = MockitoAnnotations.openMocks(this);
+        AutoCloseable closeable = MockitoAnnotations.openMocks(this);
     }
 
     @Test
