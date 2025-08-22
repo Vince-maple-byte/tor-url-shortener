@@ -1,5 +1,7 @@
 package com.vince.tor_url_shortener.controller;
 
+import com.vince.tor_url_shortener.config.Caching.Caching;
+import com.vince.tor_url_shortener.config.Caching.RedisCaching;
 import com.vince.tor_url_shortener.dto.UrlCreation;
 import com.vince.tor_url_shortener.dto.UrlDTO;
 import com.vince.tor_url_shortener.exception.UrlNotFoundException;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -16,15 +19,15 @@ import java.util.Map;
 import java.util.Optional;
 
 //Class that handles incoming http requests from the nginx server
-@RestController("url")
+@Controller("url")
 public class UrlController {
 
     private final UrlService urlService;
-    private final RedisCaching redisCaching;
+    private final Caching redisCaching;
 
     //Dependency injection the beans for UrlService and RedisCaching
     @Autowired
-    public UrlController(UrlService urlService, RedisCaching redisCaching){
+    public UrlController(UrlService urlService, Caching redisCaching){
         this.urlService = urlService;
         this.redisCaching = redisCaching;
     }

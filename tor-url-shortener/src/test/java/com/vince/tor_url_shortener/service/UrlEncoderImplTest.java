@@ -1,6 +1,6 @@
 package com.vince.tor_url_shortener.service;
 
-import com.vince.tor_url_shortener.repository.UrlRepository;
+import com.vince.tor_url_shortener.service.RedisCounter.RedisCounter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

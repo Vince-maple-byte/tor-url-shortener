@@ -1,5 +1,7 @@
 package com.vince.tor_url_shortener.service;
 
+import com.vince.tor_url_shortener.service.RedisCounter.Counter;
+import com.vince.tor_url_shortener.service.RedisCounter.RedisCounter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +11,10 @@ public class UrlEncoderImpl implements UrlEncoder{
     private final Base62 base62;
 
     //We accomplish the redis counter distribution in the RedisCounter class
-    private final RedisCounter redisCounter;
+    private final Counter redisCounter;
 
     @Autowired
-    public UrlEncoderImpl(Base62 base62, RedisCounter redisCounter){
+    public UrlEncoderImpl(Base62 base62, Counter redisCounter){
         this.base62 = base62;
         this.redisCounter = redisCounter;
     }

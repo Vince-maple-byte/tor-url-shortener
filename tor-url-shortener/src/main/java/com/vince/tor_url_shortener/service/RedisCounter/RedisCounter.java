@@ -1,14 +1,16 @@
-package com.vince.tor_url_shortener.service;
+package com.vince.tor_url_shortener.service.RedisCounter;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-public class RedisCounter {
+@Profile("!test")
+public class RedisCounter implements Counter{
 
     //RedisTemplate is an abstraction to Jedis/Lettuce
     //allows for lower level api to make direct manual redis operations while @Cacheable is an abstraction to allow for automatic caching for expensive/slow operations

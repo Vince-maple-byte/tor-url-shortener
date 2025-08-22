@@ -1,6 +1,7 @@
-package com.vince.tor_url_shortener.controller;
+package com.vince.tor_url_shortener.config.Caching;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +10,8 @@ import java.util.Optional;
 
 //Responsable for getting and retrieving the cache in redis for spring
 @Component
-public class RedisCaching {
+@Profile("!test")
+public class RedisCaching implements Caching{
 
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -19,11 +21,12 @@ public class RedisCaching {
     }
 
 
-
+    @Override
     public Optional<String> getCache(String shortenedUrl) {
         return Optional.ofNullable(redisTemplate.opsForValue().get(shortenedUrl));
     }
 
+    @Override
     public void setCache(String shortenedUrl, String originalUrl) {
         //States that we want to save this cache for 5 minutes.
         long cacheDuration = 5L;

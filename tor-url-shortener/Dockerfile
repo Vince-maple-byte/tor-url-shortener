@@ -1,7 +1,6 @@
 FROM openjdk:17-jdk-slim
 
-VOLUME /tmp
-
+#Make sure to delete VOLUME /tmp since that makes it impossible to render
 # Install dockerize
 RUN apt-get update && apt-get install -y wget && \
     wget https://github.com/jwilder/dockerize/releases/download/v0.7.0/dockerize-linux-amd64-v0.7.0.tar.gz && \

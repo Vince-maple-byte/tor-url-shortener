@@ -1,5 +1,6 @@
 package com.vince.tor_url_shortener.controller;
 
+import com.vince.tor_url_shortener.config.Caching.RedisCaching;
 import com.vince.tor_url_shortener.dto.UrlCreation;
 import com.vince.tor_url_shortener.dto.UrlDTO;
 import com.vince.tor_url_shortener.exception.UrlNotFoundException;
@@ -8,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
