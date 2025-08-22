@@ -30,6 +30,8 @@ services:
             context: ./database
             dockerfile: Dockerfile
         container_name: mysql
+        volumes:
+            -   db-data:/var/lib/mysql
         environment:
             - MYSQL_ROOT_PASSWORD=${db_password}
             - MYSQL_DATABASE=torurl
@@ -58,6 +60,9 @@ services:
             - "80:80"
         depends_on:
             - backend
+
+volumes:
+    db-data:
 
 networks:
     backend:
